@@ -38,6 +38,7 @@ public class Clatzy {
         Plan plan = new Plan(nombre, fechaInicio, valor, valorMaximoCurso);
         this.planes.add(plan);
     }
+
     public void addCliente(String nombre, String cedula, String telefono, String email){
         Cliente cliente = new Cliente(nombre, cedula, telefono, email);
         this.clientes.add(cliente);
@@ -64,7 +65,7 @@ public class Clatzy {
         for(PlanCliente planCliente : cliente.getPlanes()){
             if(planCliente.isEstadoActivo() == true){
                 tienePlan = true;
-                System.out.println("El cliente "+cliente.nombre+" ya tiene un plan activo");
+                System.out.println("El cliente " + cliente.nombre + " ya tiene un plan activo");
                 break;
             }
         }
@@ -85,16 +86,17 @@ public class Clatzy {
                 break;
             }
         }
-        if (tienePlan & planActual.id == 0){
+        if (tienePlan && (planActual.getPlan() == planes.get(0))) {
             cliente.añadirProducto(cliente, curso, date, 0, true);
             System.out.println("El cliente " + cliente.nombre + " registro exitosamente el curso " + curso.nombre);
-        } else{
+        } else if (tienePlan) {
             float valorMaximo = planActual.getPlan().getValorMaximoCurso();
             if (valorMaximo >= curso.valor) {
                 cliente.añadirProducto(cliente, curso, date, 0, true);
                 valorMaximo = valorMaximo - curso.valor;
                 planActual.getPlan().setValorMaximoCurso(valorMaximo);
-            }else{
+                System.out.println("El cliente " + cliente.nombre + " registro exitosamente el curso " + curso.nombre);
+            } else {
                 System.out.println("El plan del cliente "+ cliente.nombre + " no cubre el curso " + curso.nombre);
             }
         }
