@@ -101,12 +101,16 @@ public class Clatzy {
     }
     
     public void comprarCurso(Cliente cliente, Curso curso, LocalDate date, float valor){
-        if(curso.valor == valor){
-            cliente.añadirProducto(cliente, curso, date, valor, true);
-            System.out.println("El cliente " + cliente.nombre + " compro exitosamente el curso " + curso.nombre);
-        }
-        else{
-            System.out.println("El cliente " + cliente.nombre + " no pago el valor correcto por el curso " + curso.nombre);
+        if(!cliente.isCurso(curso)){
+            if(curso.valor == valor){
+                cliente.añadirProducto(cliente, curso, date, valor, true);
+                System.out.println("El cliente " + cliente.nombre + " compro exitosamente el curso " + curso.nombre);
+            }
+            else{
+                System.out.println("El cliente " + cliente.nombre + " no pago el valor correcto por el curso " + curso.nombre);
+            }
+        }else{
+            System.out.println("El cliente " + cliente.nombre + " ya habia registrado el curso " + curso.nombre);
         }
     }
     

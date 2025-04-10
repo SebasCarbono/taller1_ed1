@@ -39,4 +39,13 @@ public class Cliente extends Persona{
         ProductoCliente cursoComprado = new ProductoCliente(cliente, curso, fechaDeCompra, valor, estadoActivo);
         this.productos.add(cursoComprado);
     }
+
+    public boolean isCurso(Curso curso){
+        for(ProductoCliente productoCliente : productos){
+            if(productoCliente.getCurso() == curso){
+                return true;
+            }
+        }
+        return false;
+    }
 }

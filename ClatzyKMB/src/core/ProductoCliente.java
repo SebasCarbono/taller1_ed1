@@ -22,4 +22,7 @@ public class ProductoCliente extends Producto{
         this.curso = curso;
     }
     
+    public Curso getCurso(){
+        return curso;
+    }
 }
