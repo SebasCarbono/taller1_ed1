@@ -25,4 +25,8 @@ public class ProductoCliente extends Producto{
     public Curso getCurso(){
         return curso;
     }
+
+    public float getValor(){
+        return valor;
+    }
 }

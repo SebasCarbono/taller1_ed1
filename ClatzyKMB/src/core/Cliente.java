@@ -48,4 +48,13 @@ public class Cliente extends Persona{
         }
         return false;
     }
+
+    public boolean isCursoInPlan(float valor){
+        for(PlanCliente planCliente : planes){
+            if(planCliente.getPlan().getValorMaximoCurso() >= valor){
+                return true;
+            }
+        }
+        return false;
+    }
 }

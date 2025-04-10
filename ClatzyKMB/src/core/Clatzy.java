@@ -77,42 +77,50 @@ public class Clatzy {
     }
     
     public void comprarCurso(Cliente cliente, Curso curso, LocalDate date){
-        boolean tienePlan = false;
-        PlanCliente planActual = null;
-        for(PlanCliente planCliente : cliente.getPlanes()){
-            if(planCliente.estadoActivo){
-                tienePlan = true;
-                planActual = planCliente;
-                break;
+        if(!cliente.isCurso(curso)){
+            boolean tienePlan = false;
+            PlanCliente planActual = null;
+            for(PlanCliente planCliente : cliente.getPlanes()){
+                if(planCliente.estadoActivo){
+                    tienePlan = true;
+                    planActual = planCliente;
+                    break;
+                }
             }
-        }
-        if (tienePlan && (planActual.getPlan() == planes.get(0))) {
-            cliente.añadirProducto(cliente, curso, date, 0, true);
-            System.out.println("El cliente " + cliente.nombre + " registro exitosamente el curso " + curso.nombre);
-        } else if (tienePlan) {
-            float valorMaximo = planActual.getPlan().getValorMaximoCurso();
-            if (valorMaximo >= curso.valor) {
-                cliente.añadirProducto(cliente, curso, date, 0, true);
-                valorMaximo = valorMaximo - curso.valor;
-                planActual.getPlan().setValorMaximoCurso(valorMaximo);
-                System.out.println("El cliente " + cliente.nombre + " registro exitosamente el curso " + curso.nombre);
-            } else {
-                System.out.println("El plan del cliente "+ cliente.nombre + " no cubre el curso " + curso.nombre);
+
+            if (tienePlan) {
+                float valorMaximo = planActual.getPlan().getValorMaximoCurso();
+                if (valorMaximo >= curso.valor) {
+                    cliente.añadirProducto(cliente, curso, date, 0, true);
+                    valorMaximo = valorMaximo - curso.valor;
+                    planActual.getPlan().setValorMaximoCurso(valorMaximo);
+                    System.out.println("El cliente " + cliente.nombre + " registro exitosamente el curso " + curso.nombre);
+                } else {
+                    System.out.println("El plan del cliente "+ cliente.nombre + " no cubre el curso " + curso.nombre);
+                }
             }
+        }else{
+            System.out.println("El cliente " + cliente.nombre + " ya habia registrado el curso " + curso.nombre);
         }
     }
     
     public void comprarCurso(Cliente cliente, Curso curso, LocalDate date, float valor){
-        if(!cliente.isCurso(curso)){
-            if(curso.valor == valor){
+        if(cliente.isCurso(curso)){
+            System.out.println("El cliente " + cliente.nombre + " ya habia registrado el curso " + curso.nombre);
+        }
+        else{
+            if(cliente.isCursoInPlan(valor)){
+                cliente.añadirProducto(cliente, curso, date, 0, true);
+                System.out.println("El curso esta incluido en el plan del cliente " + cliente.nombre + ", por lo tanto no debe pagar. Se procede a registrar el curso " + curso.nombre + " con costo $0");
+                //El curso esta incluido en el plan del cliente Pedro Perez, por lo tanto no debe pagar. Se procede a registrar el curso Programacion Optima con costo $0
+            }
+            else if (valor == curso.valor){
                 cliente.añadirProducto(cliente, curso, date, valor, true);
                 System.out.println("El cliente " + cliente.nombre + " compro exitosamente el curso " + curso.nombre);
             }
             else{
                 System.out.println("El cliente " + cliente.nombre + " no pago el valor correcto por el curso " + curso.nombre);
             }
-        }else{
-            System.out.println("El cliente " + cliente.nombre + " ya habia registrado el curso " + curso.nombre);
         }
     }
     
